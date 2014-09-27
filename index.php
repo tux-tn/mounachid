@@ -2,6 +2,7 @@
 require_once "ini.php";
 try {
 	if ( (!empty($_POST["cin"])) || ( (!empty($_POST["fname"])) && (!empty($_POST["sname"])) && (!empty($_POST["familyname"])) ) ) {
+
 		$q = $db->prepare('SELECT DISTINCT president FROM signatures WHERE cin=:cin OR (fname = :fname AND sname = :sname AND familyname = :familyname)');
 		$q->bindValue(':cin', ltrim($_POST['cin'],'0'));
 		$q->bindValue(':fname',$_POST["fname"]);
