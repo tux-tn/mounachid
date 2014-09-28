@@ -1,8 +1,8 @@
 <?php
 require_once "ini.php";
 try {
-	if ( (!empty($_POST["cin"])) || ( (!empty($_POST["fname"])) && (!empty($_POST["sname"])) && (!empty($_POST["familyname"])) ) ) {
-
+	if ( (is_numeric(ltrim($_POST['cin'],'0')))  || ( (!empty($_POST["fname"])) && (!empty($_POST["sname"])) && (!empty($_POST["familyname"])) ) ) {
+1
 		$q = $db->prepare('SELECT DISTINCT president FROM signatures WHERE cin=:cin OR (fname = :fname AND sname = :sname AND familyname = :familyname)');
 		$q->bindValue(':cin', ltrim($_POST['cin'],'0'));
 		$q->bindValue(':fname',$_POST["fname"]);
@@ -22,7 +22,7 @@ try {
 				</ul></div>";
 		else $print =  "<div class='alert alert-error'>Vous parrainez :<br/><ol><li>". implode("</li><li>", $presidents) ."</ol></div>";
 	} else {
-		$print = "<div class='alert alert-error'>Veuillez saisir votre CIN ou votre nom</div>";
+		if($_POST) $print = "<div class='alert alert-error'>Veuillez saisir votre CIN ou votre nom</div>";
 	}
 } catch (Exception $e) {
 	fatal_error($e->getMessage());
@@ -38,7 +38,7 @@ try {
 <body>
 	<div class="container row-fluid">
 		<h1>Parrainage Présidentielles 2014</h1>
-		<?php if (!empty($print)) echo $print; ?>
+		<?php if ($print) echo $print; ?>
 		<form action="." method="post">
 			<p>Saisissez votre N° CIN ou vos prénom complet et nom de famille (en arabe) et nous allons vérifier si vous parrainez un candidat aux élections présidentielles</p>
 			<div class='input-append'>
@@ -51,8 +51,8 @@ try {
 				</ul>
 			</div>
 		</form>
-		<small class="muted pull-right" style="position:fixed; right:5px; bottom:5px;">Contact <a href="https://twitter.com/trojette">@trojette</a> & <a href="https://twitter.com/slim404">@slim404</a> source code <a href="https://github.com/PPTN/mounachid">https://github.com/PPTN/mounachid</a></small>
-	</div>
+                <small class="muted pull-right" style="position:fixed; right:5px; bottom:5px;">Contact <a href="https://twitter.com/trojette">@trojette</a> & <a href="https://twitter.com/sarhanTN">@sarhantn</a> & <a href="https://twitter.com/slim404">@slim404</a> source code <a href="https://github.com/PPTN/mounachid">https://github.com/PPTN/mounachid</a></small>
+	</div
 <script type="text/javascript" src="http://api.yamli.com/js/yamli_api.js"></script>
 <script type="text/javascript">
 	if (typeof(Yamli) == "object" && Yamli.init( { uiLanguage: "fr" , startMode: "onOrUserDefault" } ))
@@ -60,7 +60,6 @@ try {
 		Yamli.yamlify( "fname", { settingsPlacement: "inside" } );
 		Yamli.yamlify( "sname", { settingsPlacement: "inside" } );
 		Yamli.yamlify( "familyname", { settingsPlacement: "inside" } );
-
 	}
 </script>
 </body>
